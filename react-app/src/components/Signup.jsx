@@ -3,6 +3,7 @@ import { Link, useNavigate  } from 'react-router-dom'
 import Header from './Header'
 import axios from 'axios'
 import './Home.css';
+import API_URL from '../constants';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Signup = () => {
       alert('Please enter All Field Values.');
       return;
     }
-    const url = 'http://localhost:5000/signup';
+    const url = API_URL + '/signup';
     const data = {username,password,email,mobile};
     axios.post(url,data)
     .then((res) => {

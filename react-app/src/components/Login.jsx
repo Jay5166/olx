@@ -3,6 +3,7 @@ import Header from './Header'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './Home.css';
+import API_URL from '../constants';
 
 
 
@@ -19,7 +20,7 @@ const Login = () => {
       return;
     }
     // console.log({username,password});
-    const url = 'http://localhost:5000/login';
+    const url = API_URL + '/login';
     const data = {username,password};
     axios.post(url,data)
     .then((res) => {

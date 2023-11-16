@@ -3,6 +3,7 @@ import Header from './Header'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Categories from './CategoriesList';
+import API_URL from '../constants';
 // import Login from './Login';
 
 
@@ -50,7 +51,7 @@ const config = {
   },
 };
 
-const url = 'http://localhost:5000/add-product';
+const url = API_URL + '/add-product';
 
 axios.post(url,formData)
 .then((res) => {

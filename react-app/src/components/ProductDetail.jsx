@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Header from './Header';
 import { Modal, Button } from 'react-bootstrap';
+import API_URL from '../constants';
 
 const ProductDetail = () => {
 
@@ -18,7 +19,7 @@ const ProductDetail = () => {
 
 
     useEffect(() => {
-        const url = 'http://localhost:5000/get-product/' + p.productId ;
+        const url = API_URL + '/get-product/' + p.productId ;
         axios
           .get(url)
           .then((res) => {
@@ -37,7 +38,7 @@ const ProductDetail = () => {
             return;
           }
         // console.log(addedBy);
-        const url = 'http://localhost:5000/get-user/' + addedBy ;
+        const url = API_URL +  '/get-user/' + addedBy ;
         axios
           .get(url)
           .then((res) => {
@@ -59,7 +60,7 @@ const ProductDetail = () => {
         <div >
             {product && <div className="d-flex justify-content-between flex-wrap">
                 <div className='mt-5'>
-                    <img width="400px" height="200px" src={'http://localhost:5000/' + product.pimage} alt="" />
+                    <img width="400px" height="200px" src={API_URL + '/' + product.pimage} alt="" />
                     <p className="m-2"><b>Name:-</b> {product.pname}  </p>
                     <p className="m-2"><b>Description:-- </b>{product.pdesc}</p>
                     
@@ -74,7 +75,7 @@ const ProductDetail = () => {
       {/* Modal for alert with clickable link */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Body>
-          Please SignUp to see contact details. You can <a href="http://localhost:3000/signup">sign up here</a>.
+          Please SignUp to see contact details. You can <a href= {`${API_URL}/signup`}>sign up here</a>.
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => setShowModal(false)}>Close</Button>

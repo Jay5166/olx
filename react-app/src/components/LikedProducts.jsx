@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Categories from './Categories';
 import { FaHeart } from "react-icons/fa";
+import API_URL from '../constants';
 
 function LikedProducts() {
   const userName = localStorage.getItem('userName');
@@ -19,7 +20,7 @@ function LikedProducts() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    const url ='http://localhost:5000/liked-products';
+    const url =API_URL + '/liked-products';
         let data = { userId: localStorage.getItem('userId') }
         axios.post(url, data)
             .then((res) => {
@@ -95,7 +96,7 @@ function LikedProducts() {
     // console.log(userId);
 
     // console.log("productId", "userId","userName", productId, userId, userName);
-    const url = 'http://localhost:5000/like-product';
+    const url = API_URL + '/like-product';
     const data = {productId,userId}
     axios
       .post(url,data)
@@ -135,7 +136,7 @@ function LikedProducts() {
         {likedProducts && likedProducts.length > 0 ? (
           likedProducts.map((item, index) => (
             <div key={item._id} className='card m-3'>
-              <img src={'http://localhost:5000/' + item.pimage} height='200px' width='400px' alt='dummy' />
+              <img src={API_URL + '/' + item.pimage} height='200px' width='400px' alt='dummy' />
               <p className='p-2 text-success'>{item.pname} Cat:- {item.pcategory}</p>
               <p className='p-2 text-danger'>{item.pdesc}</p>
               <p className='p-2 '>{item.pprice}</p>

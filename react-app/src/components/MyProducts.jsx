@@ -5,6 +5,7 @@ import axios from "axios";
 import Categories from "./Categories";
 import { FaHeart } from "react-icons/fa";
 import './Home.css';
+import API_URL from "../constants";
 // import API_URL from "../constants";
 
 
@@ -23,7 +24,7 @@ function MyProducts() {
     // }, [])
 
     useEffect(() => {
-        const url = 'http://localhost:5000/my-products';
+        const url = API_URL + '/my-products';
         let data = { userId: localStorage.getItem('userId') }
         axios.post(url, data)
             .then((res) => {
@@ -64,7 +65,7 @@ function MyProducts() {
     const handleLike = (productId) => {
         let userId = localStorage.getItem('userId');
 
-        const url = 'http://localhost:5000/like-product';
+        const url = API_URL + '/like-product';
         const data = { userId, productId }
         axios.post(url, data)
             .then((res) => {
@@ -93,7 +94,7 @@ function MyProducts() {
                                 <div onClick={() => handleLike(item._id)} className="icon-con">
                                     <FaHeart className="icons" />
                                 </div>
-                                <img width="300px" height="200px" src={ 'http://localhost:5000/' + item.pimage} />
+                                <img width="300px" height="200px" src={ API_URL + '/' + item.pimage} />
 
                                 <p className="m-2"> {item.pname}  | {item.category} </p>
                                 <h3 className="m-2 text-danger"> {item.price} </h3>
@@ -111,7 +112,7 @@ function MyProducts() {
           products.map((item, index) =>{ 
             return(
             <div key={item._id} className='card m-3'>
-              <img src={'http://localhost:5000/' + item.pimage} width="300px" height="200px"  alt='dummy' />
+              <img src={API_URL + '/' + item.pimage} width="300px" height="200px"  alt='dummy' />
               <p className='p-2 text-success'>{item.pname} Cat:- {item.pcategory}</p>
               <p className='p-2 text-danger'>{item.pdesc}</p>
               <p className='p-2 '>{item.pprice}</p>

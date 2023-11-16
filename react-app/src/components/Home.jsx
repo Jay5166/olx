@@ -5,6 +5,7 @@ import axios from "axios";
 import Categories from "./Categories";
 import { FaHeart } from "react-icons/fa";
 import './Home.css';
+import API_URL from "../constants";
 // import API_URL from "../constants";
 
 
@@ -24,7 +25,7 @@ function Home() {
     // }, [])
 
     useEffect(() => {
-        const url ='http://localhost:5000/get-products';
+        const url = API_URL + '/get-products';
         axios.get(url)
             .then((res) => {
                 if (res.data.products) {
@@ -42,7 +43,7 @@ function Home() {
 
     const handleClick = () => {
 
-        const url = 'http://localhost:5000/search?search=' + search + '&loc=' + localStorage.getItem('userLoc');
+        const url = API_URL + '/search?search=' + search + '&loc=' + localStorage.getItem('userLoc');
         axios.get(url)
             .then((res) => {
                 console.log(res.data.products);
@@ -82,7 +83,7 @@ function Home() {
             return;
         }
 
-        const url ='http://localhost:5000/like-product';
+        const url = API_URL + '/like-product';
         const data = { userId, productId }
         axios.post(url, data)
             .then((res) => {
@@ -121,7 +122,7 @@ function Home() {
                                 <div onClick={(e) => handleLike(item._id, e)} className="icon-con">
                                     <FaHeart className="icons" />
                                 </div>
-                                <img width="300px" height="200px" src={'http://localhost:5000/' + item.pimage} />
+                                <img width="300px" height="200px" src={ API_URL + '/' + item.pimage} />
 
                                 <p className="m-2"> {item.pname}  | {item.pcategory} </p>
                                 <h3 className="m-2 text-danger"> {item.pprice} </h3>
@@ -141,7 +142,7 @@ function Home() {
                                 <div onClick={(e) => handleLike(item._id, e)} className="icon-con">
                                     <FaHeart className="icons" />
                                 </div>
-                                <img width="250px" height="150px" src={'http://localhost:5000/' + item.pimage} />
+                                <img width="250px" height="150px" src={API_URL + '/' + item.pimage} />
                                 <h3 className="m-2 price-text"> Rs. {item.pprice} /- </h3>
                                 <p className="m-2"> {item.pname}  | {item.pcategory} </p>
                                 <p className="m-2 text-success"> {item.pdesc} </p>
