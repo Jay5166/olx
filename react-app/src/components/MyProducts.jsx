@@ -16,6 +16,8 @@ function MyProducts() {
     const [products, setproducts] = useState([]);
     const [cproducts, setcproducts] = useState([]);
     const [search, setsearch] = useState('');
+    const [refresh, setrefresh] = useState(false);
+
 
     // useEffect(() => {
     //     if (!localStorage.getItem('token')) {
@@ -35,7 +37,7 @@ function MyProducts() {
             .catch((err) => {
                 alert('Server Err.')
             })
-    }, [])
+    }, [refresh])
 
     const handlesearch = (value) => {
         setsearch(value);
@@ -79,6 +81,30 @@ function MyProducts() {
 
     }
 
+    const handleDel = (pid)=>{
+        // console.log(pid);
+
+        if(!localStorage.getItem('userId')){
+            alert('Please Login First')
+            return;
+        }
+        const data = {
+            pid : pid,
+            userId : localStorage.getItem('userId')
+        }
+        const url = API_URL + '/delete-product';
+        axios.post(url, data)
+            .then((res) => {
+                if (res.data.message) {
+                    alert('Deleted Sucessful!.')
+                    setrefresh(!refresh);
+                }
+            })
+            .catch((err) => {
+                alert('Server Err.')
+            })
+    }
+
 
     return (
         <div>
@@ -99,6 +125,8 @@ function MyProducts() {
                                 <p className="m-2"> {item.pname}  | {item.category} </p>
                                 <h3 className="m-2 text-danger"> {item.price} </h3>
                                 <p className="m-2 text-success"> {item.pdesc} </p>
+                               
+
                             </div>
                         )
 
@@ -116,6 +144,9 @@ function MyProducts() {
               <p className='p-2 text-success'>{item.pname} Cat:- {item.pcategory}</p>
               <p className='p-2 text-danger'>{item.pdesc}</p>
               <p className='p-2 '>{item.pprice}</p>
+              <p className='p-2 '><Link to={`/edit-product/${item._id}`}>Edit Product</Link></p>
+              <button onClick={()=>handleDel(item._id)}>Delete</button>
+
             </div>
           )})
         ) : (

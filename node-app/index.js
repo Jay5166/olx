@@ -2,7 +2,15 @@ const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
+const http = require('http')
+const { Server } = require("socket.io");
 const app = express()
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: '*'
+  }
+});
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const { Products, Users } = require('./model');
@@ -81,7 +89,14 @@ app.post('/login',userController.login)
 app.post('/add-product',upload.single('pimage'),productController.addproduct)
 
 
+app.post('/edit-product',upload.single('pimage'),productController.editproduct)
+
+
+
 app.get('/get-products',productController.getProducts)
+
+app.post('/delete-product',productController.deleteProduct)
+
 
 // Like Api --------------------------
 app.post('/like-product',userController.likeProduct);
@@ -111,9 +126,19 @@ app.get('/get-user/:uId',userController.getUserById )
 
 app.post('/my-products', productController.myProducts);
 
+let messages = [];
 
+io.on('connection', (socket) => {
+    console.log('Socket Connected', socket.id)
 
+    socket.on('sendMsg', (data) => {
+        messages.push(data);
+        io.emit('getMsg', messages)
+    })
 
-app.listen(port, () => {
+    io.emit('getMsg', messages)
+})
+
+httpServer.listen(port, () => {
   console.log(` App listening on port ${port}`)
 })

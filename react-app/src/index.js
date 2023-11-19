@@ -11,6 +11,7 @@ import LikedProducts from './components/LikedProducts';
 import ProductDetail from './components/ProductDetail';
 import CategoryPage from './components/CategoryPage';
 import MyProducts from './components/MyProducts';
+import EditProduct from './components/EditProduct';
 
 const route = createBrowserRouter([
   {
@@ -35,6 +36,9 @@ const route = createBrowserRouter([
   },{
     path: "/category/:CatName",
     element: (<CategoryPage />)
+  },{
+    path: "/edit-product/:productId",
+    element: (<EditProduct />)
   },{
     path: "/my-products",
     element: (<MyProducts />)

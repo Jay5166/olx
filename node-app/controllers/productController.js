@@ -125,6 +125,82 @@ module.exports.getProductsById = (req,res)=>{
       res.send({ message: err.message });
     });
      } 
+     
+
+
+module.exports.deleteProduct = (req,res)=>{
+// console.log(req.body);
+Products.findOne({_id : req.body.pid })
+.then((result) => {
+  if(result.addedBy == req.body.userId){
+    Products.deleteOne({_id : req.body.pid })
+    .then((deleteResult)=>{
+if(deleteResult.acknowledged){
+res.send({message : 'sucess'})
+}
+    }).catch((err) => {
+      res.send({message : 'Error'});
+    });
+  }
+}).catch((err) => {
+  res.send({message : 'Error'});
+});
+}
+
+
+
+module.exports.editproduct = (req,res)=>{
+  // console.log(req.file);
+  // console.log(req.body);
+  // return;
+  
+    // const plat = req.body.plat;
+    // const plong = req.body.plong;
+    const pid = req.body.pid;
+    const pname = req.body.pname;
+    const pdesc = req.body.pdesc; 
+    const pprice = req.body.pprice; 
+    const pcategory = req.body.pcategory; 
+    const pimage = req.file?.path; 
+    // const addedBy = req.body.userId; 
+
+    let editobj = {}
+    if(pname){
+      editobj.pname = pname;
+    }
+    if(pdesc){
+      editobj.pdesc = pdesc;
+    }
+    if(pprice){
+      editobj.pprice = pprice;
+    }
+    if(pcategory){
+      editobj.pcategory = pcategory;
+    }
+    if(pimage){
+      editobj.pimage = pimage;
+    }
+    
+    
+    Products.updateOne({_id :pid },editobj,{new : true})
+    
+    .then((result) => {
+      res.send({message: 'Data Updated Sucessfully ! ', product : result})
+      // console.log(result);
+      
+    }).catch(() => {
+      res.send({message: 'Data Not Updated'})
+      
+    });
+  
+  
+    // get-products Api --------------
+  
+    
+  }
+
+
+
 
 
    
