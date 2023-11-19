@@ -19,6 +19,8 @@ function Header(props) {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
+
 
     navigate('/login');
   }

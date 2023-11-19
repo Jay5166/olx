@@ -11,18 +11,22 @@ const Signup = () => {
   const [password,setpassword]= useState('');
   const [email,setemail]= useState('');
   const [mobile,setmobile]= useState('');
+  const [role,setrole]= useState('');
+
 
   const handleApi = ()=>{
     // console.log({username,password});
-    if (!username || !password ||! email || !mobile) {
+    if (!username || !password ||! email || !mobile || !role) {
       alert('Please enter All Field Values.');
       return;
     }
     const url = API_URL + '/signup';
-    const data = {username,password,email,mobile};
+    const data = {username,password,email,mobile,role};
     axios.post(url,data)
     .then((res) => {
       if (res.data.message){
+        console.log(res);
+        // return;
         alert(res.data.message);
         navigate('/login')
       }
@@ -57,6 +61,13 @@ const Signup = () => {
     Mobile
     <input className='form-control' type='text' value={mobile} onChange={(e)=>{setmobile(e.target.value);}} />
     <br />
+    Select User Role
+    <select className='form-control' value={role} onChange={(e)=>{setrole(e.target.value)}}>
+    <option>Select Values</option>
+    <option>Admin</option>
+            <option>user</option>
+       </select>
+
     <button className='btn btn-primary' onClick={handleApi}>Signup</button>
 
     <Link className='ml-2' to="/login">Login</Link>

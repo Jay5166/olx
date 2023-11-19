@@ -1,25 +1,24 @@
 const jwt = require('jsonwebtoken');
 
 const { Products, Users } = require('../model');
+const authPage = require('../middlewares')
 
 
 
-  module.exports.likeProduct = (req,res)=>{
-    let productId = req.body.productId;
-    let userId = req.body.userId;
-    // console.log(req);
-  
-    Users.updateOne({_id: userId},{$addToSet : {likedProducts : productId }}) 
-    // $addToSet--this is used bec user can like multiple products & we will get it in the form of array so to puch array value into model/table we need to use this
-  
+
+module.exports.likeProduct =  (req, res) => {
+  let productId = req.body.productId;
+  let userId = req.body.userId;
+  let userRole = req.body.userRole;
+
+  Users.updateOne({ _id: userId }, { $addToSet: { likedProducts: productId } })
     .then(() => {
-      res.send({message: 'Product Liked Sucessfully ! '})
-      
-    }).catch(() => {
-      res.send({message: 'Product  Not Liked'})
-      
+      res.send({ message: 'Product Liked Successfully!' });
+    })
+    .catch(() => {
+      res.send({ message: 'Product Not Liked' });
     });
-  }
+};
 
 
  module.exports.signup = (req,res)=>{
@@ -29,8 +28,9 @@ const { Products, Users } = require('../model');
     const password = req.body.password;
     const email = req.body.email;
     const mobile = req.body.mobile;
+    const role = req.body.role;
   
-    const user = new Users({ username: username,password: password ,email : email,mobile : mobile});
+    const user = new Users({ username: username,password: password ,email : email,mobile : mobile, role : role});
   
     user.save()
     .then(() => {
@@ -64,27 +64,30 @@ const { Products, Users } = require('../model');
   }
 
 
+  // const jwt = require('jsonwebtoken');
 
- module.exports.login = (req,res)=>{
+  module.exports.login = (req,res)=>{
     // console.log(req.body);
     // return;
     const username = req.body.username;
       const password = req.body.password;
+      const role = req.body.role;
   
       Users.findOne({ username: username })
           .then((result) => {
               if (!result) {
                   res.send({ message: 'user not found.' })
               } else {
-                  if (result.password == password) {
+                  if (result.password == password && result.role == role ) {
                       const token = jwt.sign({
                           data: result
                       }, 'MYKEY', { expiresIn: '1h' });
-                      res.send({ message: 'find success.', token: token, userId: result._id ,username :result.username })
+                      res.send({ message: 'find success.', token: token, userId: result._id ,username :result.username,role : result.role })
                   }
                   if (result.password != password) {
                       res.send({ message: 'password wrong.' })
                   }
+                 
   
               }
   
@@ -94,6 +97,9 @@ const { Products, Users } = require('../model');
           })
   
   } 
+
+  
+
 
 
   module.exports.likedProducts = (req, res) => {

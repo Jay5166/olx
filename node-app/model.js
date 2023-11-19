@@ -31,7 +31,8 @@ const usersSchema = new mongoose.Schema({
       mobile: String,
       email : String,
       password: String,
-      likedProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }]
+      likedProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }],
+      role: String
     });
     
     const Users = mongoose.model('userdetails', usersSchema);

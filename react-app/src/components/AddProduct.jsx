@@ -9,6 +9,9 @@ import API_URL from '../constants';
 
 
 const AddProduct = () => {
+  // const reset = ()=>{
+  //   setpimage('')
+  //  }
 const navigate = useNavigate();
 useEffect(() => {
   if(!localStorage.getItem('token')){
@@ -107,6 +110,15 @@ axios.post(url,formData)
         </select>
         <label htmlFor="Enter Product Name">Product Image</label><br />
         <input type="file" className='form-control'  onChange={(e)=>{setpimage(e.target.files[0])}} />
+        <br />
+        {pimage && (
+        <>
+          <label htmlFor="Enter Product Name">Product Image Preview</label><br />
+          <img src={URL.createObjectURL(pimage)} style={{ marginTop: '10px', width: 200, height: '50' }} alt="" />
+          {/* <button onClick={reset}>Reset New Image</button> */}
+          <br />
+        </>
+      )}
         <button className='btn btn-primary mt-3' onClick={handleApi}>Submit</button>
         </div>
     </center>
