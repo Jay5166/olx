@@ -12,6 +12,7 @@ import ProductDetail from './components/ProductDetail';
 import CategoryPage from './components/CategoryPage';
 import MyProducts from './components/MyProducts';
 import EditProduct from './components/EditProduct';
+import AllUsers from './admin/AllUsers';
 
 const route = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const route = createBrowserRouter([
   {
     path: "/login",
     element: (<Login />),
+  },
+  {
+    path: "/allusers",
+    element: (<AllUsers />),
   },
   {
     path: "/login/jay",

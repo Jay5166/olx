@@ -1,19 +1,19 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Header.css'
-import { FaSearch } from "react-icons/fa";
+import './Header.css';
+import { FaSearch } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
 function Header(props) {
-
   const [loc, setLoc] = useState('');
   useEffect(() => {
     // Update the 'userLoc' value in localStorage whenever 'loc' changes
     localStorage.setItem('userLoc', loc);
   }, [loc]);
-  
-  const [showOver, setshowOver] = useState(false)
 
-  const navigate = useNavigate()
+  const [showOver, setshowOver] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -21,9 +21,8 @@ function Header(props) {
     localStorage.removeItem('userName');
     localStorage.removeItem('userRole');
 
-
     navigate('/login');
-  }
+  };
 
   let locations = [
     {
@@ -44,46 +43,38 @@ function Header(props) {
   ];
 
   return (
-    <div className='header-container d-flex justify-content-between'>
-
+    <div className="header-container d-flex justify-content-between">
       <div className="header">
-        <Link className='links' to="/">  HOME </Link>
+        <Link className="links" to="/">
+          HOME
+        </Link>
         <select
-            value={loc}
-            onChange={(e) => {
-              setLoc(e.target.value);
-            }}
-          >
-          {
-            locations.map((item, index) => {
-              return (
-                <option value={`${item.latitude},${item.longitude}`} >
-                  {item.placeName}
-                </option>
-              )
-            })
-          }
+          value={loc}
+          onChange={(e) => {
+            setLoc(e.target.value);
+          }}
+        >
+          {locations.map((item, index) => (
+            <option value={`${item.latitude},${item.longitude}`} key={index}>
+              {item.placeName}
+            </option>
+          ))}
         </select>
-        <input className='search'
-          type='text'
+        <input
+          className="search"
+          type="text"
           value={props && props.search}
-          onChange={(e) => props.handlesearch && props.handlesearch(e.target.value)
-          }
+          onChange={(e) => props.handlesearch && props.handlesearch(e.target.value)}
         />
-        <button className='search-btn' onClick={() => props.handleClick && props.handleClick()} > <FaSearch /> </button>
+        <button className="search-btn" onClick={() => props.handleClick && props.handleClick()}>
+          <FaSearch />
+        </button>
       </div>
 
       <div>
-
-
-
-
-
-
-
         <div
           onClick={() => {
-            setshowOver(!showOver)
+            setshowOver(!showOver);
           }}
           style={{
             display: 'flex',
@@ -94,56 +85,86 @@ function Header(props) {
             height: '40px',
             color: '#fff',
             fontSize: '14px',
-            borderRadius: '50%'
-          }} >  {localStorage.getItem('userName') ? localStorage.getItem('userName').charAt(0).toUpperCase() : 'Hii'} </div>
+            borderRadius: '50%',
+          }}
+        >
+          {localStorage.getItem('userName') ? localStorage.getItem('userName').charAt(0).toUpperCase() : 'Hii'}
+        </div>
 
-        {showOver && <div style={{
-          minHeight: '100px',
-          width: '200px',
-          background: '#eee',
-          position: 'absolute',
-          top: '0',
-          right: '0',
-          zIndex: 1,
-          marginTop: '50px',
-          marginRight: '50px',
-          color: 'red',
-          fontSize: '14px',
-          background: '#002f34',
-          borderRadius: '7px'
-        }}>
-          <div>
-            {!!localStorage.getItem('token') &&
-              <Link to="/add-product">
-                <button className="logout-btn">ADD PRODUCT  </button>
-              </Link>}
+        {showOver && (
+          <div
+            style={{
+              minHeight: '100px',
+              width: '200px',
+              background: '#eee',
+              position: 'absolute',
+              top: '0',
+              right: '0',
+              zIndex: 1,
+              marginTop: '50px',
+              marginRight: '50px',
+              color: 'red',
+              fontSize: '14px',
+              background: '#002f34',
+              borderRadius: '7px',
+            }}
+          >
+            {localStorage.getItem('userRole') === 'user' ? (
+              <>
+                <div>
+                  {!!localStorage.getItem('token') && (
+                    <Link to="/add-product">
+                      <button className="logout-btn">ADD PRODUCT</button>
+                    </Link>
+                  )}
+                </div>
+                <div>
+                  {!!localStorage.getItem('token') && (
+                    <Link to="/liked-products">
+                      <button className="logout-btn">FAVOURITES</button>
+                    </Link>
+                  )}
+                </div>
+                <div>
+                  {!!localStorage.getItem('token') && (
+                    <Link to="/my-products">
+                      <button className="logout-btn">MY ADS</button>
+                    </Link>
+                  )}
+                </div>
+                <div>
+                  {!localStorage.getItem('token') ? (
+                    <Link to="/login">LOGIN</Link>
+                  ) : (
+                    <button className="logout-btn" onClick={handleLogout}>
+                      LOGOUT
+                    </button>
+                  )}
+                </div>
+              </>
+            ) : localStorage.getItem('userRole') === 'Admin' ? (
+              <>
+                <div>
+                  <Link to="/allusers">
+                    <button className="logout-btn">All Users</button>
+                  </Link>
+                </div>
+                <div>
+                  {!localStorage.getItem('token') ? (
+                    <Link to="/login">LOGIN</Link>
+                  ) : (
+                    <button className="logout-btn" onClick={handleLogout}>
+                      LOGOUT
+                    </button>
+                  )}
+                </div>
+              </>
+            ) : null}
           </div>
-          <div>
-            {!!localStorage.getItem('token') &&
-              <Link to="/liked-products">
-                <button className="logout-btn"> FAVOURITES  </button>
-              </Link>}
-          </div>
-          <div>
-            {!!localStorage.getItem('token') &&
-              <Link to="/my-products">
-                <button className="logout-btn">MY ADS  </button>
-              </Link>}
-          </div>
-          <div>
-            {!localStorage.getItem('token') ?
-              <Link to="/login">  LOGIN </Link> :
-              <button className='logout-btn' onClick={handleLogout}> LOGOUT </button>}
-          </div>
-
-
-
-        </div>}
+        )}
       </div>
-
     </div>
-  )
+  );
 }
-
 
 export default Header;
